@@ -1,5 +1,11 @@
 body {
-  background-color: goldenrod;
+  font-family: 'DM Sans', sans-serif;
+  background-image: url(../img/bgc-img.jpg);
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  background-position: center;
+  object-fit: contain;
+  background-size: cover;
 }
 
 .gallery {
@@ -11,23 +17,30 @@ body {
   list-style: none;
 }
 
-.image-gallery {
-  object-fit: cover;
-  width: 300px;
-  height: 200px;
-  display: block;
-  border-radius: 10px;
+.photo-card {
   transition-duration: 250ms;
 }
 
-.image-gallery:hover {
+.photo-card:hover {
   transform: scale(1.03);
 }
 
+.image-gallery {
+  object-fit: cover;
+  width: 320px;
+  height: 200px;
+  display: block;
+  border-radius: 10px;
+}
+
 .info {
+  margin-top: 5px;
   display: flex;
   justify-content: center;
   gap: 10px;
+  background-color: rgba(128, 128, 128, 0.438);
+  border-radius: 20px;
+  padding: 5px 10px;
 }
 
 .form-container {
@@ -37,14 +50,12 @@ body {
   padding: 10px;
 }
 
-.search-form {
-}
-
 .thumb {
   position: relative;
 }
 
 .submit-button {
+  font-family: 'DM Sans', sans-serif;
   position: absolute;
   padding: 10px;
   right: 0;
@@ -56,12 +67,12 @@ body {
 }
 
 .submit-button:hover {
-  background-color: rgb(0, 255, 136);
+  background-color: rgb(241, 118, 118);
   transform: scale(1.03);
 }
 
 .search-input {
-  padding: 10px;
+  padding: 11px;
   padding-right: 70px;
   width: 300px;
   outline: none;
@@ -77,6 +88,7 @@ body {
 }
 
 .load-more {
+  font-family: 'DM Sans', sans-serif;
   background-color: rgb(143, 143, 143);
   padding: 20px;
   border-radius: 20px;
@@ -84,7 +96,7 @@ body {
 }
 
 .load-more:hover {
-  background-color: rgb(0, 255, 136);
+  background-color: rgb(241, 118, 118);
   cursor: pointer;
   transform: scale(1.03);
 }

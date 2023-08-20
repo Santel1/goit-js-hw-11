@@ -10,11 +10,6 @@ const loadMoreBtn = document.querySelector('.load-more');
 let page = 1;
 let totalHits = 0;
 
-// loadMoreBtn.classList.add('.js-load-more');
-// loadMoreBtn.classList.remove('.js-load-more');
-
-// loadMoreBtn.style.display = 'none';
-
 form.addEventListener('submit', event => {
   event.preventDefault();
   const searchQueryInput = form.querySelector('input[name="searchQuery"]');
@@ -63,20 +58,17 @@ loadMoreBtn.addEventListener('click', evt => {
   fetchImages(searchQuery, page)
     .then(resp => {
       if (resp.hits.length === 0) {
-        loadMoreBtn.classList.add('js-load-more'); // Если нет данных, скрываем кнопку
+        loadMoreBtn.classList.add('js-load-more');
         Notiflix.Notify.info(
           "We're sorry, but you've reached the end of search results."
         );
         return;
       }
 
-      // Добавляем данные на страницу
       gallery.insertAdjacentHTML('beforeend', createMurkupImageGallery(resp));
 
-      // Если количество загруженных данных равно общему числу изображений,
-      // значит пользователь дошел до конца коллекции
       if (page * 40 >= totalHits) {
-        loadMoreBtn.classList.add('js-load-more'); // Скрываем кнопку
+        loadMoreBtn.classList.add('js-load-more');
         Notiflix.Notify.info(
           "We're sorry, but you've reached the end of search results."
         );

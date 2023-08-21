@@ -61,13 +61,13 @@ body {
   right: 0;
   border-radius: 30px;
   border: 1px solid rgb(0, 0, 0);
-  background-color: rgb(143, 143, 143);
+  background-color: rgba(143, 143, 143, 0.877);
   cursor: pointer;
   transition-duration: 250ms;
 }
 
 .submit-button:hover {
-  background-color: rgb(241, 118, 118);
+  background-color: rgba(241, 118, 118, 0.788);
   transform: scale(1.03);
 }
 
@@ -89,14 +89,14 @@ body {
 
 .load-more {
   font-family: 'DM Sans', sans-serif;
-  background-color: rgb(143, 143, 143);
+  background-color: rgba(143, 143, 143, 0.877);
   padding: 20px;
   border-radius: 20px;
   transition-duration: 250ms;
 }
 
 .load-more:hover {
-  background-color: rgb(241, 118, 118);
+  background-color: rgba(241, 118, 118, 0.788);
   cursor: pointer;
   transform: scale(1.03);
 }

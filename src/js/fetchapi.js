@@ -12,8 +12,4 @@ async function fetchImages(form, page) {
   return response.data;
 }
 
-// fetchImages('cars')
-//   .then(console.log)
-//   .catch(err => err);
-
 export { fetchImages };

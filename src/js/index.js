@@ -9,22 +9,19 @@ const gallery = document.querySelector('.gallery');
 const loadMoreBtn = document.querySelector('.load-more');
 let page = 1;
 let totalHits = 0;
-
 form.addEventListener('submit', event => {
   event.preventDefault();
   const searchQueryInput = form.querySelector('input[name="searchQuery"]');
   const searchQuery = searchQueryInput.value;
-
+  page = 1;
   if (searchQuery === '') {
     Notiflix.Notify.failure('Please fill in the input field.');
     return;
   }
-
   fetchImages(searchQuery)
     .then(resp => {
       loadMoreBtn.classList.remove('js-load-more');
       totalHits = resp.totalHits;
-
       if (resp.hits.length === 0) {
         loadMoreBtn.classList.add('js-load-more');
         Notiflix.Notify.failure(
@@ -34,7 +31,6 @@ form.addEventListener('submit', event => {
         return;
       }
       Notiflix.Notify.info(`Hooray! We found ${totalHits} images.`);
-
       const showLoadMoreBtn =
         totalHits <= 40
           ? loadMoreBtn.classList.add('js-load-more')

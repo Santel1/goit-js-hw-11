@@ -120,7 +120,6 @@ function waypointCreate() {
     element: (lastCard = gallery.lastElementChild),
     handler: function loadMore(direction) {
       if (direction === 'down') {
-        page += 1;
         const searchQueryInput = form.querySelector(
           'input[name="searchQuery"]'
         );
@@ -148,6 +147,7 @@ function waypointCreate() {
               Notiflix.Notify.info(
                 "We're sorry, but you've reached the end of search results."
               );
+              waypoint.disable();
             }
             const { height: cardHeight } = document
               .querySelector('.gallery')

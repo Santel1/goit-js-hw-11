@@ -38,10 +38,6 @@ form.addEventListener('submit', event => {
           : loadMoreBtn.classList.remove('js-load-more');
 
       gallery.innerHTML = createMurkupImageGallery(resp);
-      Waypoint.destroyAll();
-      waypointCreate();
-      // const lastChild = gallery.lastElementChild;
-      // console.log(lastChild);
 
       const galleryCard = new SimpleLightbox('.gallery a', {
         captions: true,
@@ -79,7 +75,7 @@ loadMoreBtn.addEventListener('click', evt => {
         .firstElementChild.getBoundingClientRect();
 
       window.scrollBy({
-        top: cardHeight * 3,
+        top: cardHeight * 2,
         behavior: 'smooth',
       });
     })
@@ -113,55 +109,4 @@ function createMurkupImageGallery(data) {
     `
     )
     .join('');
-}
-
-function waypointCreate() {
-  const waypoint = new Waypoint({
-    element: (lastCard = gallery.lastElementChild),
-    handler: function loadMore(direction) {
-      if (direction === 'down') {
-        const searchQueryInput = form.querySelector(
-          'input[name="searchQuery"]'
-        );
-        const searchQuery = searchQueryInput.value;
-        page += 1;
-        fetchImages(searchQuery, page)
-          .then(resp => {
-            if (resp.hits.length === 0) {
-              loadMoreBtn.classList.add('js-load-more');
-              Notiflix.Notify.info(
-                "We're sorry, but you've reached the end of search results."
-              );
-              return;
-            }
-
-            gallery.insertAdjacentHTML(
-              'beforeend',
-              createMurkupImageGallery(resp)
-            );
-
-            waypointCreate();
-
-            if (page * 40 >= totalHits) {
-              loadMoreBtn.classList.add('js-load-more');
-              Waypoint.disableAll();
-              Notiflix.Notify.info(
-                "We're sorry, but you've reached the end of search results."
-              );
-            }
-            const { height: cardHeight } = document
-              .querySelector('.gallery')
-              .firstElementChild.getBoundingClientRect();
-
-            window.scrollBy({
-              top: cardHeight * 3,
-              behavior: 'smooth',
-            });
-          })
-          .catch(err => console.error(err));
-      }
-      console.log(direction);
-    },
-    offset: '100%',
-  });
 }

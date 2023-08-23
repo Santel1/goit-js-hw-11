@@ -9,8 +9,10 @@ const gallery = document.querySelector('.gallery');
 const loadMoreBtn = document.querySelector('.load-more');
 let page = 1;
 let totalHits = 0;
+
 form.addEventListener('submit', event => {
   event.preventDefault();
+  Waypoint.destroyAll();
   const searchQueryInput = form.querySelector('input[name="searchQuery"]');
   const searchQuery = searchQueryInput.value;
   page = 1;
@@ -37,6 +39,9 @@ form.addEventListener('submit', event => {
           : loadMoreBtn.classList.remove('js-load-more');
 
       gallery.innerHTML = createMurkupImageGallery(resp);
+      waypointCreate();
+      // const lastChild = gallery.lastElementChild;
+      // console.log(lastChild);
 
       const galleryCard = new SimpleLightbox('.gallery a', {
         captions: true,
@@ -86,7 +91,7 @@ function createMurkupImageGallery(data) {
     .map(
       data =>
         `
-<div class="photo-card">
+<div class="photo-card waypoint" >
  <a href="${data.largeImageURL}">
     <img src="${data.webformatURL}" alt="${data.tags}" loading="lazy" class="image-gallery"/>
  </a>
@@ -108,4 +113,55 @@ function createMurkupImageGallery(data) {
     `
     )
     .join('');
+}
+
+function waypointCreate() {
+  const waypoint = new Waypoint({
+    element: (lastCard = gallery.lastElementChild),
+    handler: function loadMore(direction) {
+      if (direction === 'down') {
+        page += 1;
+        const searchQueryInput = form.querySelector(
+          'input[name="searchQuery"]'
+        );
+        const searchQuery = searchQueryInput.value;
+        page += 1;
+        fetchImages(searchQuery, page)
+          .then(resp => {
+            if (resp.hits.length === 0) {
+              loadMoreBtn.classList.add('js-load-more');
+              Notiflix.Notify.info(
+                "We're sorry, but you've reached the end of search results."
+              );
+              return;
+            }
+
+            gallery.insertAdjacentHTML(
+              'beforeend',
+              createMurkupImageGallery(resp)
+            );
+
+            waypointCreate();
+
+            if (page * 40 >= totalHits) {
+              loadMoreBtn.classList.add('js-load-more');
+              Notiflix.Notify.info(
+                "We're sorry, but you've reached the end of search results."
+              );
+            }
+            const { height: cardHeight } = document
+              .querySelector('.gallery')
+              .firstElementChild.getBoundingClientRect();
+
+            window.scrollBy({
+              top: cardHeight * 3,
+              behavior: 'smooth',
+            });
+          })
+          .catch(err => console.error(err));
+      }
+      console.log(direction);
+    },
+    offset: '100%',
+  });
 }

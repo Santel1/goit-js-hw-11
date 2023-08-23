@@ -12,7 +12,6 @@ let totalHits = 0;
 
 form.addEventListener('submit', event => {
   event.preventDefault();
-  Waypoint.destroyAll();
   const searchQueryInput = form.querySelector('input[name="searchQuery"]');
   const searchQuery = searchQueryInput.value;
   page = 1;
@@ -39,6 +38,7 @@ form.addEventListener('submit', event => {
           : loadMoreBtn.classList.remove('js-load-more');
 
       gallery.innerHTML = createMurkupImageGallery(resp);
+      Waypoint.destroyAll();
       waypointCreate();
       // const lastChild = gallery.lastElementChild;
       // console.log(lastChild);
@@ -144,10 +144,10 @@ function waypointCreate() {
 
             if (page * 40 >= totalHits) {
               loadMoreBtn.classList.add('js-load-more');
+              Waypoint.disableAll();
               Notiflix.Notify.info(
                 "We're sorry, but you've reached the end of search results."
               );
-              waypoint.disable();
             }
             const { height: cardHeight } = document
               .querySelector('.gallery')

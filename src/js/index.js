@@ -44,6 +44,7 @@ form.addEventListener('submit', event => {
           : loadMoreBtn.classList.remove('js-load-more');
 
       gallery.innerHTML = createMurkupImageGallery(resp);
+      galleryCard.refresh();
     })
     .catch(err => console.error(err));
 });

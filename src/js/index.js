@@ -15,7 +15,6 @@ const galleryCard = new SimpleLightbox('.gallery a', {
   captionsData: 'alt',
   captionDelay: 250,
 });
-
 form.addEventListener('submit', event => {
   event.preventDefault();
   const searchQueryInput = form.querySelector('input[name="searchQuery"]');
@@ -111,4 +110,50 @@ function createMurkupImageGallery(data) {
     `
     )
     .join('');
+}
+
+window.addEventListener('scroll', handleScroll);
+
+let isLoading = false;
+
+function handleScroll() {
+  const scrollPosition = window.innerHeight + window.scrollY;
+  const pageHeight = document.body.scrollHeight;
+
+  if (scrollPosition >= pageHeight - 800 && !isLoading) {
+    isLoading = true;
+    const searchQueryInput = form.querySelector('input[name="searchQuery"]');
+    const searchQuery = searchQueryInput.value;
+    page += 1;
+    fetchImages(searchQuery, page)
+      .then(resp => {
+        if (resp.hits.length === 0) {
+          loadMoreBtn.classList.add('js-load-more');
+          Notiflix.Notify.info(
+            "We're sorry, but you've reached the end of search results."
+          );
+          return;
+        }
+
+        gallery.insertAdjacentHTML('beforeend', createMurkupImageGallery(resp));
+        galleryCard.refresh();
+        isLoading = false;
+
+        if (page * 40 >= totalHits) {
+          loadMoreBtn.classList.add('js-load-more');
+          Notiflix.Notify.info(
+            "We're sorry, but you've reached the end of search results."
+          );
+        }
+        const { height: cardHeight } = document
+          .querySelector('.gallery')
+          .firstElementChild.getBoundingClientRect();
+
+        window.scrollBy({
+          top: cardHeight * 2,
+          behavior: 'smooth',
+        });
+      })
+      .catch(err => console.error(err));
+  }
 }

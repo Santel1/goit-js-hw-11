@@ -8,7 +8,6 @@ async function fetchImages(form, page) {
   const response = await axios.get(
     `?key=${API_KEY}&q=${form}&image_type=photo&orientation=horizontal&safesearch=true&page=${page}&per_page=40`
   );
-
   return response.data;
 }
 

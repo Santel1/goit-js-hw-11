@@ -10,6 +10,12 @@ const loadMoreBtn = document.querySelector('.load-more');
 let page = 1;
 let totalHits = 0;
 
+const galleryCard = new SimpleLightbox('.gallery a', {
+  captions: true,
+  captionsData: 'alt',
+  captionDelay: 250,
+});
+
 form.addEventListener('submit', event => {
   event.preventDefault();
   const searchQueryInput = form.querySelector('input[name="searchQuery"]');
@@ -38,12 +44,6 @@ form.addEventListener('submit', event => {
           : loadMoreBtn.classList.remove('js-load-more');
 
       gallery.innerHTML = createMurkupImageGallery(resp);
-
-      const galleryCard = new SimpleLightbox('.gallery a', {
-        captions: true,
-        captionsData: 'alt',
-        captionDelay: 250,
-      });
     })
     .catch(err => console.error(err));
 });
@@ -63,6 +63,7 @@ loadMoreBtn.addEventListener('click', evt => {
       }
 
       gallery.insertAdjacentHTML('beforeend', createMurkupImageGallery(resp));
+      galleryCard.refresh();
 
       if (page * 40 >= totalHits) {
         loadMoreBtn.classList.add('js-load-more');
@@ -87,7 +88,7 @@ function createMurkupImageGallery(data) {
     .map(
       data =>
         `
-<div class="photo-card waypoint" >
+<div class="photo-card" >
  <a href="${data.largeImageURL}">
     <img src="${data.webformatURL}" alt="${data.tags}" loading="lazy" class="image-gallery"/>
  </a>
